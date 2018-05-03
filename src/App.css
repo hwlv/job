@@ -2,6 +2,7 @@
 
 .App {
   text-align: center;
+  display: none;
 }
 
 .App-logo {

@@ -1,36 +1,8 @@
 import React from 'react'
-import { createStore } from 'redux'
-import logo from './logo.svg'
+import {connect} from 'react-redux'
 import { Button,List } from 'antd-mobile'
+import { addGun, removeGun, addGunAsync } from './index.redux'
 import './App.css'
-/**redux */
-function counter(state=0,action) {
-    switch (action.type){
-        case 'add':
-            return state+1
-        case 'reduce':
-            return state-1
-        default:
-            return 10
-    }
-}
-function listener(){
-    const current=store.getState()
-    console.log(`现在是${current}`);
-}
-// build store
-const store=createStore(counter)
-// 订阅，每次state修改，都会执行listener
-store.subscribe(listener)
-//输出初始值
-const init=store.getState()
-console.log(init);
-// 提交状态变更的申请
-store.dispatch({type:'add'})
-store.dispatch({ type: 'reduce' })
-// const afterAdd=store.getState()
-// console.log(afterAdd);
-
 const Item = List.Item;
 const Brief = Item.Brief;
 /**app */
@@ -47,10 +19,15 @@ class App extends React.Component {
 
 
   render() {
+      // const num=store.getState()
+      // const num=this.props.num
+      // const addGun=this.props.addGun
+      // const removeGun=this.props.removeGun
+      // const addGunAsync=this.props.addGunAsync
     return (
       <div className="App">
-      hello23
           {/*<Button type="primary">Button</Button>*/}
+          <p>ant design example</p>
           <List renderHeader={()=>'士兵列表'}>
               {
                 this.state.soldiers.map(v=>{
@@ -58,44 +35,65 @@ class App extends React.Component {
                 })
               }
           </List>
+          <p>store example</p>
+          <div>
+              <h1>now i have {this.props.num} guns</h1>
+              {/*<Button onClick={()=>store.dispatch(addGun())}>apply guns</Button>*/}
+              {/*<Button onClick={()=>store.dispatch(removeGun())}>recovery guns</Button>*/}
+              {/*<Button onClick={()=>store.dispatch(addGunAsync())}>recovery guns async</Button>*/}
+              <Button onClick={this.props.addGun}>apply guns</Button>
+              <Button onClick={this.props.removeGun}>recovery guns</Button>
+              <Button onClick={this.props.addGunAsync}>recovery guns async</Button>
+
+          </div>
       </div>
     );
   }
 }
-function decorateArmour(target, key, descriptor) {
-    const method = descriptor.value;
-    let moreDef = 100;
-    let ret;
-    descriptor.value = (...args)=>{
-        args[0] += moreDef;
-        ret = method.apply(target, args);
-        return ret;
-    }
-    return descriptor;
+const mapStatetoProps=(state)=>{
+    return {num:state}
 }
-
-class Man{
-    constructor(def = 2,atk = 3,hp = 3){
-        this.init(def,atk,hp);
-    }
-
-    @decorateArmour
-    init(def,atk,hp){
-        this.def = def; // 防御值
-        this.atk = atk; // 攻击力
-        this.hp = hp; // 血量
-    }
-    toString(){
-        return `防御力:$,攻击力:$,血量:$`;
-    }
-}
-
-var tony = new Man();
-
-console.log(`当前状态 ===> $`);
-// 输出：当前状态 ===> 防御力:102,攻击力:3,血量:3
-
-
-
+const actionCreators={addGun,removeGun,addGunAsync}
+App=connect(mapStatetoProps,actionCreators)(App)
 
 export default App;
+
+// function decorateArmour(target, key, descriptor) {
+//     const method = descriptor.value;
+//     let moreDef = 100;
+//     let ret;
+//     descriptor.value = (...args)=>{
+//         args[0] += moreDef;
+//         ret = method.apply(target, args);
+//         return ret;
+//     }
+//     return descriptor;
+// }
+
+/**redux */
+// function counter(state=0,action) {
+//     switch (action.type){
+//         case 'add':
+//             return state+1
+//         case 'reduce':
+//             return state-1
+//         default:
+//             return 10
+//     }
+// }
+// function listener(){
+//     const current=store.getState()
+//     console.log(`现在是${current}`);
+// }
+// build store
+// const store=createStore(counter)
+// 订阅，每次state修改，都会执行listener
+// store.subscribe(listener)
+//输出初始值
+// const init=store.getState()
+// console.log(init);
+// 提交状态变更的申请
+// store.dispatch({type:'add'})
+// store.dispatch({ type: 'reduce' })
+// const afterAdd=store.getState()
+// console.log(afterAdd);

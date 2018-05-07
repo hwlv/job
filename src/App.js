@@ -5,7 +5,18 @@ import { addGun, removeGun, addGunAsync } from './index.redux'
 import './App.css'
 const Item = List.Item;
 const Brief = Item.Brief;
+
+// const mapStatetoProps=(state)=>{
+//     return {num:state}
+// }
+// const actionCreators={addGun,removeGun,addGunAsync}
+// App=connect(mapStatetoProps,actionCreators)(App)
 /**app */
+// @connect(mapStatetoProps,actionCreators)
+@connect(
+    state=> {num:state},
+    {addGun,removeGun,addGunAsync}
+)
 class App extends React.Component {
   constructor(props){
       super(props);
@@ -50,11 +61,6 @@ class App extends React.Component {
     );
   }
 }
-const mapStatetoProps=(state)=>{
-    return {num:state}
-}
-const actionCreators={addGun,removeGun,addGunAsync}
-App=connect(mapStatetoProps,actionCreators)(App)
 
 export default App;
 
